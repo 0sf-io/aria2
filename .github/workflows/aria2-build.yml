@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        repository: https://github.com/aria2/aria2.git
+        repository: aria2/aria2
     - name: Install dependencies
       run: |
         apt-get install  \
