@@ -1,0 +1,44 @@
+name: Build aria2
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: https://github.com/aria2/aria2.git
+    - name: Install dependencies
+      run: |
+      apt-get install  \
+        libssl-dev \
+        libxml2-dev \
+        autoconf \
+        automake \
+        autotools-dev \
+        autopoint \
+        libtool \
+        nettle-dev \
+        libgmp-dev \
+        libssh2-1-dev \
+        libc-ares-dev \
+        zlib1g-dev \
+        libsqlite3-dev \
+        liblzma-dev \
+        libgpg-error-dev \
+        libgcrypt-dev \
+        pkg-config \
+        build-essential
+    - name: Prepare
+      run: autoreconf -i
+    - name: configure
+      run: ./configure ARIA2_STATIC=yes
+    - name: make
+      run: make -j$(nproc)
+    - name: check binary
+      run: ./src/aria2c --help
