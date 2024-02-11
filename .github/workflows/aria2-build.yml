@@ -14,7 +14,8 @@ jobs:
       with:
         repository: aria2/aria2
     - name: Install dependencies
-      run: uname -a
+      run: |
+        brew install automake
     - name: Prepare
       run: autoreconf -i
     - name: configure
