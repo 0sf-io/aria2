@@ -22,7 +22,7 @@ jobs:
     - name: Prepare
       run: autoreconf -i
     - name: configure
-      run: ./configure ARIA2_STATIC=yes --without-appletls --with-openssl --disable-shared --enable-static --without-gnutls
+      run: ./configure ARIA2_STATIC=yes --with-openssl --disable-shared --enable-static --without-gnutls
     - name: make
       run: make -j$(nproc)
     - name: zip
