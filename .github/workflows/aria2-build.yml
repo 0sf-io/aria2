@@ -8,6 +8,8 @@ on:
 
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
@@ -19,8 +21,15 @@ jobs:
     - name: Prepare
       run: autoreconf -i
     - name: configure
-      run: ./configure ARIA2_STATIC=yes --without-appletls --with-openssl --disable-shared --enable-static
+      run: ./configure ARIA2_STATIC=yes --without-appletls --with-openssl --disable-shared --enable-static --without-gnutls
     - name: make
       run: make -j$(nproc)
-    - name: check binary
-      run: ./src/aria2c --help
+    - name: zip
+      run: |
+        cp src/aria2c .
+        zip -D aria2-darwin-amd64.zip aria2c
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: aria2-darwin-amd64.zip
