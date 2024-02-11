@@ -14,30 +14,11 @@ jobs:
       with:
         repository: aria2/aria2
     - name: Install dependencies
-      run: |
-        sudo apt-get install  \
-          libssl-dev \
-          libxml2-dev \
-          autoconf \
-          automake \
-          autotools-dev \
-          autopoint \
-          libtool \
-          nettle-dev \
-          libgmp-dev \
-          libssh2-1-dev \
-          libc-ares-dev \
-          zlib1g-dev \
-          libsqlite3-dev \
-          liblzma-dev \
-          libgpg-error-dev \
-          libgcrypt-dev \
-          pkg-config \
-          build-essential
+      run: uname -a
     - name: Prepare
       run: autoreconf -i
     - name: configure
-      run: ./configure ARIA2_STATIC=yes
+      run: ./configure ARIA2_STATIC=yes --without-appletls --with-openssl --disable-shared --enable-static
     - name: make
       run: make -j$(nproc)
     - name: check binary
